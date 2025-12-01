@@ -15,22 +15,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="DanoUtils\**" />
-    <EmbeddedResource Remove="DanoUtils\**" />
-    <None Remove="DanoUtils\**" />
-  </ItemGroup>
+ 
 
  
   <ItemGroup>
-    <PackageReference Include="Microsoft.Playwright" Version="1.54.0" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.56.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
-
  
-  <ItemGroup>
-    <ProjectReference Include="DanoUtils\DanoUtils.csproj" />
-  </ItemGroup>
-
 
 </Project>
