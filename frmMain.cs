@@ -227,7 +227,7 @@ namespace PwCdpPageScrapper
             //
 
             PwPageModel dataToSend = new PwPageModel(
-                Guid.Parse(userName),
+                Guid.Parse(userId),
                 Guid.Parse(password),
                 userName,
                 allFrames
