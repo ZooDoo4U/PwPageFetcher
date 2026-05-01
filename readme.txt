@@ -17,7 +17,7 @@ Overview:       Currently the POM generaete will get any and everything on the p
 
                 get_text_firstName 
 
-                <or> 
+                <or>          
 
                 [frame_Name]_[get|set]_phoneNumber -- for elements in an iframe
 

@@ -8,6 +8,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Playwright;
 using PwPageFetcher;
 
@@ -103,8 +104,7 @@ namespace PwCdpPageScrapper
 
                 this.htmlClassName = GetModelName( allFrames.Keys.First() );
                 lblHtmlModelName.Text = this.htmlClassName;
-                txtJsonCode.Text = pageSource;
-
+                txtJsonCode.Text = pageSource;               
             }
             catch(Exception ex)
             {
@@ -323,6 +323,7 @@ namespace PwCdpPageScrapper
             try
             {                
                 await page.GotoAsync( url, new PageGotoOptions { WaitUntil = WaitUntilState.DOMContentLoaded } );
+                
                 pageInfoList.Add( new PageInfo
                 {
                     FullUrl = page.Url,
@@ -341,7 +342,7 @@ namespace PwCdpPageScrapper
             {                
                 await browser.CloseAsync();
             }
-
+            await page.ReloadAsync();
             return pageInfoList;
         }
 
@@ -385,20 +386,21 @@ namespace PwCdpPageScrapper
 
     public class WebScraper
     {
+        IPage  page ;
         public async Task<List<PageInfo>> ScrapePageAndIframesAsync( string url )
         {
             var pageInfoList = new List<PageInfo>();
 
             
-            using var playwright = await Playwright.CreateAsync();
-
+            var playwright = await Playwright.CreateAsync();
             
             await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = true
             });
+
+            page = await browser.NewPageAsync();
             
-            var page = await browser.NewPageAsync();
             try
             {
                 await page.GotoAsync( url, new PageGotoOptions { WaitUntil = WaitUntilState.DOMContentLoaded } );
@@ -419,12 +421,12 @@ namespace PwCdpPageScrapper
                 Console.WriteLine( $"An unexpected error occurred: {ex.Message}" );
             }
             finally
-            {
+            {                
                 await browser.CloseAsync();
             }
-
             return pageInfoList;
         }
+
 
         private async Task GetIframeContentRecursive( IFrame frame, List<PageInfo> pageInfoList )
         {
